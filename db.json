@@ -1,0 +1,283 @@
+{
+  "card": [
+    {
+      "id": 1,
+      "team": "min",
+      "makeCardUserEmail": "alsvhtks@naver.com",
+      "cardTitle": "기획",
+      "cardContent": "테스트 설계중",
+      "cardGroup": [
+        {
+          "cardTitle": "테스트 설계중",
+          "cardContent": "테스트 설계중",
+          "cardTag": ["기획", "설계"]
+        },
+        {
+          "cardTitle": "테스트 디자인",
+          "cardContent": "테스트 디자인",
+          "cardTag": ["기획", "디자인"]
+        }
+      ],
+      "cardDate": "2024-09-10T12:34:56Z",
+      "files": [
+        {
+          "id": 1,
+          "name": "example.pdf",
+          "url": "/uploads/example.pdf",
+          "type": "application/pdf"
+        },
+        {
+          "id": 2,
+          "name": "image.png",
+          "url": "/uploads/image.png",
+          "type": "image/png"
+        }
+      ],
+      "cardModal": {
+        "modalTitle": "Sample Modal Title",
+        "modalContent": "This is the content of the modal.",
+        "cardTitle": "testTitle2",
+        "cardContent": "testContent",
+        "comments": [
+          {
+            "id": 1,
+            "commentText": "This is a comment.",
+            "commenterEmail": "commenter@example.com",
+            "commentDate": "2024-09-10T13:45:00Z"
+          },
+          {
+            "id": 2,
+            "commentText": "Another comment.",
+            "commenterEmail": "anothercommenter@example.com",
+            "commentDate": "2024-09-10T14:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "team": "min",
+      "makeCardUserEmail": "alsvhtks@naver.com",
+      "cardTitle": "testTitle2",
+      "cardContent": "testContent",
+      "cardGroup": [
+        {
+          "cardTitle": "testTitle4",
+          "cardContent": "testContent4",
+          "cardTag": ["sampleTag", "sampleTag2"]
+        },
+        {
+          "cardTitle": "testTitle4",
+          "cardContent": "testContent4",
+          "cardTag": ["sampleTag", "sampleTag2"]
+        },
+        {
+          "cardTitle": "testTitle4",
+          "cardContent": "testContent4",
+          "cardTag": ["sampleTag", "sampleTag2", "sampleTag3"]
+        }
+      ],
+      "cardDate": "2024-09-10T12:34:56Z",
+      "files": [
+        {
+          "id": 1,
+          "name": "example.pdf",
+          "url": "/uploads/example.pdf",
+          "type": "application/pdf"
+        },
+        {
+          "id": 2,
+          "name": "image.png",
+          "url": "/uploads/image.png",
+          "type": "image/png"
+        }
+      ],
+      "cardModal": {
+        "modalTitle": "Sample Modal Title",
+        "modalContent": "This is the content of the modal.",
+        "cardTitle": "testTitle",
+        "cardContent": "testContent",
+        "comments": [
+          {
+            "id": 1,
+            "commentText": "This is a comment.",
+            "commenterEmail": "commenter@example.com",
+            "commentDate": "2024-09-10T13:45:00Z"
+          },
+          {
+            "id": 2,
+            "commentText": "Another comment.",
+            "commenterEmail": "anothercommenter@example.com",
+            "commentDate": "2024-09-10T14:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "team": "min",
+      "makeCardUserEmail": "alsvhtks@naver.com",
+      "cardTitle": "testTitle",
+      "cardContent": "testContent",
+      "cardGroup": [
+        {
+          "cardTitle": "testTitle4",
+          "cardContent": "testContent4",
+          "cardTag": ["sampleTag", "sampleTag2", "sampleTag3"]
+        },
+        {
+          "cardTitle": "testTitle4",
+          "cardContent": "testContent4",
+          "cardTag": ["sampleTag", "sampleTag2"]
+        },
+        {
+          "cardTitle": "testTitle4",
+          "cardContent": "testContent4",
+          "cardTag": [
+            "sampleTag",
+            "sampleTag2",
+            "sampleTag3",
+            "sampleTag3",
+            "sampleTag3"
+          ]
+        }
+      ],
+      "cardDate": "2024-09-10T12:34:56Z",
+      "files": [
+        {
+          "id": 1,
+          "name": "example.pdf",
+          "url": "/uploads/example.pdf",
+          "type": "application/pdf"
+        },
+        {
+          "id": 2,
+          "name": "image.png",
+          "url": "/uploads/image.png",
+          "type": "image/png"
+        }
+      ],
+      "cardModal": {
+        "modalTitle": "Sample Modal Title",
+        "modalContent": "This is the content of the modal.",
+        "cardTitle": "testTitle",
+        "cardContent": "testContent",
+        "comments": [
+          {
+            "id": 1,
+            "commentText": "This is a comment.",
+            "commenterEmail": "commenter@example.com",
+            "commentDate": "2024-09-10T13:45:00Z"
+          },
+          {
+            "id": 2,
+            "commentText": "Another comment.",
+            "commenterEmail": "anothercommenter@example.com",
+            "commentDate": "2024-09-10T14:00:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "team": "min",
+      "makeCardUserEmail": "alsvhtks@naver.com",
+      "cardTitle": "testTitle1",
+      "cardContent": "testContent",
+      "cardGroup": [
+        {
+          "cardTitle": "testTitle4",
+          "cardContent": "testContent4",
+          "cardTag": ["sampleTag", "sampleTag2"]
+        },
+        {
+          "cardTitle": "testTitle4",
+          "cardContent": "testContent4",
+          "cardTag": ["sampleTag", "sampleTag2"]
+        },
+        {
+          "cardTitle": "testTitle4",
+          "cardContent": "testContent4",
+          "cardTag": ["sampleTag", "sampleTag2", "sampleTag3"]
+        }
+      ],
+      "cardDate": "2024-09-10T12:34:56Z",
+      "files": [
+        {
+          "id": 1,
+          "name": "example.pdf",
+          "url": "/uploads/example.pdf",
+          "type": "application/pdf"
+        },
+        {
+          "id": 2,
+          "name": "image.png",
+          "url": "/uploads/image.png",
+          "type": "image/png"
+        }
+      ],
+      "cardModal": {
+        "modalTitle": "Sample Modal Title",
+        "modalContent": "This is the content of the modal.",
+        "cardTitle": "testTitle2",
+        "cardContent": "testContent",
+        "comments": [
+          {
+            "id": 1,
+            "commentText": "This is a comment.",
+            "commenterEmail": "commenter@example.com",
+            "commentDate": "2024-09-10T13:45:00Z"
+          },
+          {
+            "id": 2,
+            "commentText": "Another comment.",
+            "commenterEmail": "anothercommenter@example.com",
+            "commentDate": "2024-09-10T14:00:00Z"
+          }
+        ]
+      },
+      "id": 4
+    }
+  ],
+  "users": [
+    {
+      "email": "alsvhtks@naver.com",
+      "password": "123123",
+      "name": "민형기",
+      "date": "1997-02-14",
+      "phone": "1010-3020-9437",
+      "team": "min",
+      "id": 1
+    },
+    {
+      "email": "alsgudrl133@ebsap.co.kr",
+      "password": "123123",
+      "name": "민형기",
+      "date": "1997-02-14",
+      "phone": "010-3020-9437",
+      "team": "min",
+      "id": 2
+    },
+    {
+      "email": "test",
+      "password": "123123",
+      "name": "123",
+      "date": "1233-12-03",
+      "phone": "123123123",
+      "id": 5
+    }
+  ],
+  "board": [
+    {
+      "title": "Larsen1",
+      "content": "Shaw2342343241",
+      "email": "alsvhtks@naver.com",
+      "id": 1
+    },
+    {
+      "title": "123",
+      "content": "123",
+      "email": "alsvhtks@naver.com",
+      "id": 2
+    }
+  ]
+}

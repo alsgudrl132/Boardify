@@ -1,0 +1,25 @@
+{
+  "name": "vue-study",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt --port 3002",
+    "db": "json-server --watch db.json --port 3003",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/dotenv": "^1.4.2",
+    "axios": "^0.18.0",
+    "bootstrap-vue": "^2.23.1",
+    "core-js": "^3.25.3",
+    "json-server": "^0.16.3",
+    "jsonwebtoken": "^8.5.1",
+    "nuxt": "^2.15.8",
+    "vue": "^2.7.10",
+    "vue-server-renderer": "^2.7.10",
+    "vue-template-compiler": "^2.7.10",
+    "vuedraggable": "^2.24.3"
+  }
+}
