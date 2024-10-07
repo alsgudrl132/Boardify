@@ -1,65 +1,81 @@
 <template>
-  <div v-if="isLoading">
-    <Loading />
-  </div>
-  <div v-else-if="emailCheck">
-    <div
-      class="d-flex justify-content-center align-items-center"
-      style="height: 100vh"
-    >
-      <div class="text-center">
-        <b-form-input
-          placeholder="Enter your email"
-          class="mb-2"
-          v-model="user.email"
-          readonly
-        ></b-form-input>
-        <b-form-input
-          type="password"
-          v-model="user.password"
-          placeholder="Enter your password"
-          class="mb-2"
-        ></b-form-input>
-        <b-form-input
-          type="text"
-          v-model="user.name"
-          placeholder="이름"
-          class="mb-2"
-        ></b-form-input>
-        <b-form-input
-          type="date"
-          v-model="user.date"
-          class="mb-2"
-        ></b-form-input>
-        <b-form-input
-          type="text"
-          v-model="user.phone"
-          placeholder="010-0000-0000"
-          class="mb-2"
-        ></b-form-input>
-        <div class="row d-flex justify-content-center">
-          <b-button variant="primary" class="col-5 ml-1" @click="register"
-            >수정</b-button
-          >
-          <b-button class="col-5 ml-1" @click="cancel">취소</b-button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="mypage-container">
+    <b-container v-if="isLoading">
+      <Loading />
+    </b-container>
 
-  <div
-    class="d-flex justify-content-center align-items-center"
-    style="height: 100vh"
-    v-else-if="isError"
-  >
-    <strong>잘못된 경로입니다</strong>
+    <b-container v-else-if="emailCheck" class="py-5">
+      <b-card class="mypage-card">
+        <h2 class="text-center mb-4">내 정보 수정</h2>
+        <b-form @submit.prevent="register">
+          <b-form-group label="이메일:" label-for="email">
+            <b-form-input
+              id="email"
+              v-model="user.email"
+              readonly
+              class="mb-2"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group label="비밀번호:" label-for="password">
+            <b-form-input
+              id="password"
+              v-model="user.password"
+              type="password"
+              placeholder="비밀번호를 입력하세요"
+              class="mb-2"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group label="이름:" label-for="name">
+            <b-form-input
+              id="name"
+              v-model="user.name"
+              placeholder="이름을 입력하세요"
+              class="mb-2"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group label="생년월일:" label-for="date">
+            <b-form-input
+              id="date"
+              v-model="user.date"
+              type="date"
+              class="mb-2"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group label="전화번호:" label-for="phone">
+            <b-form-input
+              id="phone"
+              v-model="user.phone"
+              placeholder="010-0000-0000"
+              class="mb-2"
+            ></b-form-input>
+          </b-form-group>
+
+          <div class="d-flex justify-content-between mt-4">
+            <b-button type="submit" variant="primary" class="px-4"
+              >수정</b-button
+            >
+            <b-button variant="outline-secondary" @click="cancel" class="px-4"
+              >취소</b-button
+            >
+          </div>
+        </b-form>
+      </b-card>
+    </b-container>
+
+    <b-container v-else-if="isError" class="text-center py-5">
+      <b-alert show variant="danger">잘못된 경로입니다</b-alert>
+    </b-container>
   </div>
 </template>
 
 <script>
 import store from "@/store/index.js";
-import axios from "axios";
 import jwt from "jsonwebtoken";
+import { supabase } from "~/plugins/supabase.js";
 
 export default {
   store: store,
@@ -87,7 +103,17 @@ export default {
       jwt.verify(token, process.env.JWT_SECRET);
       await this.initUserData();
     } catch (e) {
-      this.$router.push("/login");
+      if (e.name === "TokenExpiredError") {
+        this.$bvToast.toast("토큰이 만료되었습니다. 다시 로그인해주세요.", {
+          title: "세션 만료",
+          variant: "warning",
+          solid: true,
+        });
+        this.$store.dispatch("logOut");
+        this.$router.push("/login");
+      } else {
+        console.error(e);
+      }
     }
   },
   methods: {
@@ -101,36 +127,37 @@ export default {
         return;
       }
 
-      axios
-        .put(
-          `http://localhost:3003/users/${this.$route.params.id}`,
-          {
+      try {
+        const { error } = await supabase
+          .from("users")
+          .update({
             email: this.user.email,
             password: this.user.password,
             name: this.user.name,
             date: this.user.date,
             phone: this.user.phone,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            alert("회원정보가 업데이트되었습니다.");
-            this.$store.commit("logOut");
-            localStorage.setItem("email", this.user.email);
-            this.$store.commit("logIn");
-            this.$router.push("/");
-          } else {
-            console.log(res);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+          })
+          .eq("id", this.$route.params.id)
+          .single();
+
+        if (error) throw error;
+
+        this.$bvToast.toast("회원정보가 업데이트되었습니다.", {
+          title: "수정 완료",
+          variant: "success",
+          solid: true,
         });
+        localStorage.setItem("email", this.user.email);
+        this.$store.commit("logIn");
+        this.$router.push("/");
+      } catch (error) {
+        console.error("Failed to update user:", error.message);
+        this.$bvToast.toast("회원정보 업데이트에 실패했습니다.", {
+          title: "오류",
+          variant: "danger",
+          solid: true,
+        });
+      }
     },
     async initUserData() {
       this.isLoading = true;
@@ -141,21 +168,21 @@ export default {
       }
 
       try {
-        const res = await axios.get(
-          `http://localhost:3003/users/${this.$route.params.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        this.user = res.data;
-        const email = res.data.email;
-        this.$store.dispatch("emailCheck", email);
-        this.isLoading = false;
+        const { data: users, error } = await supabase
+          .from("users")
+          .select("*")
+          .eq("id", this.$route.params.id)
+          .single();
+
+        if (error) throw error;
+
+        this.user = users;
+        this.$store.dispatch("emailCheck", users.email);
       } catch (error) {
+        console.error("Failed to fetch data:", error.message);
         this.isError = true;
-        console.error("Failed to fetch data:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
   },
@@ -166,3 +193,18 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.mypage-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+}
+
+.mypage-card {
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+</style>

@@ -3,146 +3,55 @@
     {
       "id": 1,
       "team": "min",
-      "makeCardUserEmail": "alsvhtks@naver.com",
+      " ": "alsvhtks@naver.com",
       "cardTitle": "기획",
       "cardContent": "테스트 설계중",
       "cardGroup": [
         {
-          "cardTitle": "테스트 설계중",
-          "cardContent": "테스트 설계중",
-          "cardTag": ["기획", "설계"]
-        },
-        {
-          "cardTitle": "테스트 디자인",
-          "cardContent": "테스트 디자인",
-          "cardTag": ["기획", "디자인"]
-        }
-      ],
-      "cardDate": "2024-09-10T12:34:56Z",
-      "files": [
-        {
           "id": 1,
-          "name": "example.pdf",
-          "url": "/uploads/example.pdf",
-          "type": "application/pdf"
+          "groupTitle": "테스트 설계중",
+          "groupContent": "테스트 설계중",
+          "groupTag": [
+            "기획",
+            "설계"
+          ],
+          "groupDate": "2024-09-10T13:45:00Z",
+          "comment": [
+            {
+              "commentText": "This is a comment.",
+              "commenterEmail": "commenter@example.com",
+              "commentDate": "2024-09-10T13:45:00Z"
+            },
+            {
+              "commentText": "This is a comment2.",
+              "commenterEmail": "commenter@example.com",
+              "commentDate": "2024-09-10T13:45:00Z"
+            }
+          ]
         },
         {
           "id": 2,
-          "name": "image.png",
-          "url": "/uploads/image.png",
-          "type": "image/png"
-        }
-      ],
-      "cardModal": {
-        "modalTitle": "Sample Modal Title",
-        "modalContent": "This is the content of the modal.",
-        "cardTitle": "testTitle2",
-        "cardContent": "testContent",
-        "comments": [
-          {
-            "id": 1,
-            "commentText": "This is a comment.",
-            "commenterEmail": "commenter@example.com",
-            "commentDate": "2024-09-10T13:45:00Z"
-          },
-          {
-            "id": 2,
-            "commentText": "Another comment.",
-            "commenterEmail": "anothercommenter@example.com",
-            "commentDate": "2024-09-10T14:00:00Z"
-          }
-        ]
-      }
-    },
-    {
-      "id": 2,
-      "team": "min",
-      "makeCardUserEmail": "alsvhtks@naver.com",
-      "cardTitle": "testTitle2",
-      "cardContent": "testContent",
-      "cardGroup": [
-        {
-          "cardTitle": "testTitle4",
-          "cardContent": "testContent4",
-          "cardTag": ["sampleTag", "sampleTag2"]
-        },
-        {
-          "cardTitle": "testTitle4",
-          "cardContent": "testContent4",
-          "cardTag": ["sampleTag", "sampleTag2"]
-        },
-        {
-          "cardTitle": "testTitle4",
-          "cardContent": "testContent4",
-          "cardTag": ["sampleTag", "sampleTag2", "sampleTag3"]
-        }
-      ],
-      "cardDate": "2024-09-10T12:34:56Z",
-      "files": [
-        {
-          "id": 1,
-          "name": "example.pdf",
-          "url": "/uploads/example.pdf",
-          "type": "application/pdf"
-        },
-        {
-          "id": 2,
-          "name": "image.png",
-          "url": "/uploads/image.png",
-          "type": "image/png"
-        }
-      ],
-      "cardModal": {
-        "modalTitle": "Sample Modal Title",
-        "modalContent": "This is the content of the modal.",
-        "cardTitle": "testTitle",
-        "cardContent": "testContent",
-        "comments": [
-          {
-            "id": 1,
-            "commentText": "This is a comment.",
-            "commenterEmail": "commenter@example.com",
-            "commentDate": "2024-09-10T13:45:00Z"
-          },
-          {
-            "id": 2,
-            "commentText": "Another comment.",
-            "commenterEmail": "anothercommenter@example.com",
-            "commentDate": "2024-09-10T14:00:00Z"
-          }
-        ]
-      }
-    },
-    {
-      "id": 3,
-      "team": "min",
-      "makeCardUserEmail": "alsvhtks@naver.com",
-      "cardTitle": "testTitle",
-      "cardContent": "testContent",
-      "cardGroup": [
-        {
-          "cardTitle": "testTitle4",
-          "cardContent": "testContent4",
-          "cardTag": ["sampleTag", "sampleTag2", "sampleTag3"]
-        },
-        {
-          "cardTitle": "testTitle4",
-          "cardContent": "testContent4",
-          "cardTag": ["sampleTag", "sampleTag2"]
-        },
-        {
-          "cardTitle": "testTitle4",
-          "cardContent": "testContent4",
-          "cardTag": [
-            "sampleTag",
-            "sampleTag2",
-            "sampleTag3",
-            "sampleTag3",
-            "sampleTag3"
+          "groupTitle": "테스트 디자인",
+          "groupContent": "테스트 디자인",
+          "groupTag": [
+            "기획",
+            "디자인"
+          ],
+          "groupDate": "2024-09-10T13:45:00Z",
+          "comment": [
+            {
+              "commentText": "This is a comment3.",
+              "commenterEmail": "commenter@example.com",
+              "commentDate": "2024-09-10T13:45:00Z"
+            },
+            {
+              "commentText": "This is a comment4.",
+              "commenterEmail": "commenter@example.com",
+              "commentDate": "2024-09-10T13:45:00Z"
+            }
           ]
         }
       ],
-      "cardDate": "2024-09-10T12:34:56Z",
       "files": [
         {
           "id": 1,
@@ -156,86 +65,7 @@
           "url": "/uploads/image.png",
           "type": "image/png"
         }
-      ],
-      "cardModal": {
-        "modalTitle": "Sample Modal Title",
-        "modalContent": "This is the content of the modal.",
-        "cardTitle": "testTitle",
-        "cardContent": "testContent",
-        "comments": [
-          {
-            "id": 1,
-            "commentText": "This is a comment.",
-            "commenterEmail": "commenter@example.com",
-            "commentDate": "2024-09-10T13:45:00Z"
-          },
-          {
-            "id": 2,
-            "commentText": "Another comment.",
-            "commenterEmail": "anothercommenter@example.com",
-            "commentDate": "2024-09-10T14:00:00Z"
-          }
-        ]
-      }
-    },
-    {
-      "team": "min",
-      "makeCardUserEmail": "alsvhtks@naver.com",
-      "cardTitle": "testTitle1",
-      "cardContent": "testContent",
-      "cardGroup": [
-        {
-          "cardTitle": "testTitle4",
-          "cardContent": "testContent4",
-          "cardTag": ["sampleTag", "sampleTag2"]
-        },
-        {
-          "cardTitle": "testTitle4",
-          "cardContent": "testContent4",
-          "cardTag": ["sampleTag", "sampleTag2"]
-        },
-        {
-          "cardTitle": "testTitle4",
-          "cardContent": "testContent4",
-          "cardTag": ["sampleTag", "sampleTag2", "sampleTag3"]
-        }
-      ],
-      "cardDate": "2024-09-10T12:34:56Z",
-      "files": [
-        {
-          "id": 1,
-          "name": "example.pdf",
-          "url": "/uploads/example.pdf",
-          "type": "application/pdf"
-        },
-        {
-          "id": 2,
-          "name": "image.png",
-          "url": "/uploads/image.png",
-          "type": "image/png"
-        }
-      ],
-      "cardModal": {
-        "modalTitle": "Sample Modal Title",
-        "modalContent": "This is the content of the modal.",
-        "cardTitle": "testTitle2",
-        "cardContent": "testContent",
-        "comments": [
-          {
-            "id": 1,
-            "commentText": "This is a comment.",
-            "commenterEmail": "commenter@example.com",
-            "commentDate": "2024-09-10T13:45:00Z"
-          },
-          {
-            "id": 2,
-            "commentText": "Another comment.",
-            "commenterEmail": "anothercommenter@example.com",
-            "commentDate": "2024-09-10T14:00:00Z"
-          }
-        ]
-      },
-      "id": 4
+      ]
     }
   ],
   "users": [
@@ -269,7 +99,7 @@
   "board": [
     {
       "title": "Larsen1",
-      "content": "Shaw2342343241",
+      "content": "Shaw234234324133",
       "email": "alsvhtks@naver.com",
       "id": 1
     },

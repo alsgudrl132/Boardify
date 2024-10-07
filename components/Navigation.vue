@@ -1,23 +1,32 @@
 <template>
   <div>
     <client-only>
-      <b-nav tabs class="d-flex justify-content-between">
-        <b-nav>
-          <b-nav-item to="/" exact>Home</b-nav-item>
-          <b-nav-item to="/board">Board</b-nav-item>
-          <b-nav-item to="/another-link">Another Link</b-nav-item>
-        </b-nav>
-        <b-nav />
-        <b-nav tabs class="d-flex">
-          <div v-if="isLogIn === true" class="d-flex">
-            <b-nav-item class="ml-auto" @click="myPage">MyPage</b-nav-item>
-            <b-nav-item class="ml-auto" @click="logOut">LogOut</b-nav-item>
-          </div>
-          <b-nav-item v-else to="/login" class="ml-auto">LogIn</b-nav-item>
-          <b-nav-item to="/regist" class="ml-auto">Regist</b-nav-item>
-        </b-nav>
-      </b-nav></client-only
-    >
+      <b-navbar toggleable="lg" type="dark" variant="primary" class="px-4">
+        <b-navbar-brand to="/" class="font-weight-bold"
+          >Boardify</b-navbar-brand
+        >
+
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav>
+            <b-nav-item to="/" exact>Home</b-nav-item>
+            <b-nav-item to="/board">Board</b-nav-item>
+          </b-navbar-nav>
+
+          <b-navbar-nav class="ml-auto">
+            <template v-if="isLogIn">
+              <b-nav-item @click="myPage">MyPage</b-nav-item>
+              <b-nav-item @click="logOut">LogOut</b-nav-item>
+            </template>
+            <template v-else>
+              <b-nav-item to="/login">LogIn</b-nav-item>
+              <b-nav-item to="/regist">Regist</b-nav-item>
+            </template>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
+    </client-only>
   </div>
 </template>
 
@@ -56,3 +65,22 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.navbar-nav .nav-link {
+  color: #ffffff !important;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: #ffffff !important;
+  font-weight: bold;
+  opacity: 1;
+}
+
+.navbar-brand {
+  letter-spacing: 1px;
+}
+</style>
