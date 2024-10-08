@@ -435,6 +435,17 @@ export const actions = {
       console.error("코멘트 삭제중 오류 발생:", error);
     }
   },
+  async deleteList({ commit }, params) {
+    try {
+      const { error } = await supabase
+        .from("cardgroups")
+        .delete()
+        .eq("id", params);
+      if (error) throw error;
+    } catch (error) {
+      console.error("리스트 삭제중 오류 발생:", error);
+    }
+  },
   async updateComment({ commit }, params) {
     try {
       const { error } = await supabase

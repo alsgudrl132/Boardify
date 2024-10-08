@@ -15,7 +15,7 @@
         <b-button
           variant="outline-danger"
           size="sm"
-          @click="deleteGroup"
+          @click="deleteList"
           class="pr-12px"
         >
           <i class="fas fa-trash mr-1"></i>리스트 삭제
@@ -273,8 +273,11 @@ export default {
         this.$emit("updateGroup", this.cardId);
       });
     },
-    async deleteGroup() {
-      console.log(this.cardId);
+    async deleteList() {
+      if (confirm("정말 삭제하시겠습니까?")) {
+        this.$store.dispatch("deleteList", this.cardId);
+        this.$emit("updateGroup", this.cardId);
+      } else return;
     },
   },
 };
