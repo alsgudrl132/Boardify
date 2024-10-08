@@ -307,7 +307,6 @@ export const actions = {
           grouptitle: params.grouptitle,
           groupcontent: params.groupcontent,
           grouptag: params.grouptag,
-          groupdate: new Date(Date.now()),
           team: params.team,
         })
         .eq("id", params.id);

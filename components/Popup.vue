@@ -9,15 +9,18 @@
     size="lg"
     class="trello-modal"
   >
-    <div class="modal-header-actions mb-3">
-      <b-button
-        variant="outline-danger"
-        size="sm"
-        @click="deleteGroup"
-        class="pr-12px"
-      >
-        <i class="fas fa-trash mr-1"></i>리스트 삭제
-      </b-button>
+    <div class="modal-header-actions mb-3 d-flex justify-content-between">
+      <strong class="mt-1">카드번호 : {{ groupData.cardid }}</strong>
+      <div>
+        <b-button
+          variant="outline-danger"
+          size="sm"
+          @click="deleteGroup"
+          class="pr-12px"
+        >
+          <i class="fas fa-trash mr-1"></i>리스트 삭제
+        </b-button>
+      </div>
     </div>
     <b-form-input
       v-model="groupData.grouptitle"
@@ -63,21 +66,22 @@
         </b-button>
       </b-badge>
     </div>
-    <b-form-group label="Description">
+    <b-form-group label="설명">
       <b-form-textarea
         v-model="groupData.groupcontent"
         rows="5"
         max-rows="8"
         class="mb-3"
+        placeholder="추가할 설명을 입력해주세요."
       ></b-form-textarea>
     </b-form-group>
     <hr />
-    <h6>Comments</h6>
+    <h6>코멘트</h6>
     <b-form-textarea
       v-model="commentData.commenttext"
       rows="3"
       class="mb-2"
-      placeholder="Add a comment..."
+      placeholder="추가할 코멘트를 입력해주세요."
     />
     <b-button
       variant="primary"
