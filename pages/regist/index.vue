@@ -28,6 +28,7 @@
         placeholder="010-0000-0000"
         class="mb-2"
       ></b-form-input>
+      <b-button variant="primary" class="mb-1">팀 선택</b-button>
       <div class="row d-flex justify-content-center">
         <b-button variant="primary" class="col-5 ml-1" @click="register">
           회원가입
@@ -87,7 +88,7 @@ export default {
             email: this.user.email,
             password: this.user.password,
             name: this.user.name,
-            date: Date(Date.now()),
+            date: this.user.date,
             phone: this.user.phone,
           },
         ]);

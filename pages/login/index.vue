@@ -41,6 +41,16 @@
           >
         </div>
       </b-form>
+      <div class="d-flex justify-content-center mt-3 ml-5 mr-5">
+        <p>
+          처음 방문하십니까?
+          <b-nav>
+            <b-nav-item to="/regist" style="color: #0969da; cursor: pointer"
+              >회원가입하기</b-nav-item
+            ></b-nav
+          >
+        </p>
+      </div>
     </b-card>
   </div>
 </template>
