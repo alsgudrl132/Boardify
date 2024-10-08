@@ -1,5 +1,6 @@
 // store/index.js
 
+import { all } from "core-js/fn/promise";
 import { supabase } from "~/plugins/supabase.js";
 
 // 상태 정의
@@ -279,6 +280,18 @@ export const actions = {
         .from("cardgroups")
         .select("*")
         .eq("id", id);
+      groupData.forEach((list, index) => {
+        groupData.map((item, index) => {
+          const date = new Date(item.groupdate);
+          let day = date.getDate();
+          let month = date.getMonth() + 1;
+          let year = date.getFullYear();
+          let hour = date.getHours();
+          let min = date.getMinutes();
+          let sec = date.getSeconds();
+          item.groupdate = `${year}년${month}월${day}일 ${hour}시${min}분${sec}초`;
+        });
+      });
       commit("getGroup", groupData);
 
       if (groupError) throw groupError;
@@ -360,6 +373,17 @@ export const actions = {
         .from("cardgroupcomments")
         .select("*")
         .eq("cardgroupid", id);
+      comments.map((item, index) => {
+        console.log(item);
+        const date = new Date(item.commentdate);
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        let hour = date.getHours();
+        let min = date.getMinutes();
+        let sec = date.getSeconds();
+        item.commentdate = `${year}년${month}월${day}일 ${hour}시${min}분${sec}초`;
+      });
 
       commit("getComment", comments);
 
@@ -375,7 +399,6 @@ export const actions = {
       .select("team")
       .eq("email", userEmail)
       .single();
-    console.log(this);
 
     if (userError || !users) {
       console.error("사용자 정보를 가져오는 중 오류 발생:", userError);
@@ -489,8 +512,28 @@ export const actions = {
         const resultArray = boards.filter(
           (item) => item.email === localStorage.getItem("email")
         );
+        resultArray.map((item, index) => {
+          const date = new Date(item.date);
+          let day = date.getDate();
+          let month = date.getMonth() + 1;
+          let year = date.getFullYear();
+          let hour = date.getHours();
+          let min = date.getMinutes();
+          let sec = date.getSeconds();
+          item.date = `${year}년${month}월${day}일 ${hour}시${min}분${sec}초`;
+        });
         commit("getBoardData", resultArray);
       } else {
+        boards.map((item, index) => {
+          const date = new Date(item.date);
+          let day = date.getDate();
+          let month = date.getMonth() + 1;
+          let year = date.getFullYear();
+          let hour = date.getHours();
+          let min = date.getMinutes();
+          let sec = date.getSeconds();
+          item.date = `${year}년${month}월${day}일 ${hour}시${min}분${sec}초`;
+        });
         commit("getBoardData", boards);
       }
     } catch (err) {
@@ -505,6 +548,16 @@ export const actions = {
         .eq("id", id);
 
       if (error) throw error;
+
+      const date = new Date(board[0].date);
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+      let hour = date.getHours();
+      let min = date.getMinutes();
+      let sec = date.getSeconds();
+      board[0].date = `${year}년${month}월${day}일 ${hour}시${min}분${sec}초`;
+
       commit("getBoardDataById", board[0]);
     } catch (err) {
       console.error("Error fetching board data by ID:", err);

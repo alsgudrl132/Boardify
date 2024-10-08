@@ -80,8 +80,27 @@ export default {
       const boardData = Array.isArray(this.$store.state.boardData)
         ? this.$store.state.boardData
         : [];
+
       return [...boardData].sort((a, b) => {
-        return new Date(b.date) - new Date(a.date);
+        const parseKoreanDate = (dateString) => {
+          const regex =
+            /(\d{4})년(\d{1,2})월(\d{1,2})일\s(\d{1,2})시(\d{1,2})분(\d{1,2})초/;
+          const match = dateString.match(regex);
+
+          if (match) {
+            const [, year, month, day, hour, minute, second] =
+              match.map(Number);
+            return new Date(year, month - 1, day, hour, minute, second);
+          }
+
+          console.error("Invalid date format:", dateString);
+          return new Date(0);
+        };
+
+        const dateA = parseKoreanDate(a.date);
+        const dateB = parseKoreanDate(b.date);
+
+        return dateB - dateA;
       });
     },
   },

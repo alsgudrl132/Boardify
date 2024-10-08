@@ -63,8 +63,6 @@
                 @click="openPopup(group)"
                 class="mb-2 task-item"
               >
-                <h5>{{ group.id }}</h5>
-
                 <div class="mb-2">
                   <b-badge
                     v-for="(groupTag, groupTagIndex) in group.grouptag"
@@ -76,7 +74,9 @@
                     {{ groupTag }}
                   </b-badge>
                 </div>
-                <strong>{{ group.grouptitle }}</strong>
+                <strong>리스트 번호 : {{ group.id }}</strong>
+                <hr />
+                <h5>{{ group.grouptitle }}</h5>
               </b-list-group-item>
             </draggable>
           </b-card>
