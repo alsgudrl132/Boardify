@@ -10,7 +10,7 @@
     class="trello-modal"
   >
     <div class="modal-header-actions mb-3 d-flex justify-content-between">
-      <strong class="mt-1">카드번호 : {{ groupData.cardid }}</strong>
+      <strong class="mt-1">카드번호 : {{ groupData.id }}</strong>
       <div>
         <b-button
           variant="outline-danger"
