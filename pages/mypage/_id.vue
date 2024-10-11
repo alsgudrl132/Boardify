@@ -53,7 +53,15 @@
               class="mb-2"
             ></b-form-input>
           </b-form-group>
-
+          <b-button variant="primary" class="w-100 mb-3" @click="selectTeam"
+            >팀 선택</b-button
+          >
+          <b-form-input onlyread disabled class="mb-3" v-model="user.team" />
+          <b-form-input
+            placeholder="팀 비밀번호를 입력해주세요."
+            class="mb-5"
+            v-model="user.teamPassword"
+          />
           <div class="d-flex justify-content-between mt-4">
             <b-button type="submit" variant="primary" class="px-4"
               >수정</b-button
@@ -69,16 +77,21 @@
     <b-container v-else-if="isError" class="text-center py-5">
       <b-alert show variant="danger">잘못된 경로입니다</b-alert>
     </b-container>
+    <team-modal @noTeam="noTeam" @selectTeam="selectTeamFromModal" />
   </div>
 </template>
 
 <script>
 import store from "@/store/index.js";
 import jwt from "jsonwebtoken";
+import TeamModal from "../../components/TeamModal.vue";
 import { supabase } from "~/plugins/supabase.js";
 
 export default {
   store: store,
+  components: {
+    TeamModal,
+  },
   data() {
     return {
       user: {
@@ -87,7 +100,10 @@ export default {
         name: "",
         date: "",
         phone: "",
+        team: "",
+        teamPassword: "",
       },
+      isNull: false,
       isLoading: false,
       isError: false,
     };
@@ -127,31 +143,59 @@ export default {
         return;
       }
 
+      this.isNull = this.user.team === null;
+
       try {
+        if (!this.isNull) {
+          const { data, teamError } = await supabase
+            .from("teams")
+            .select("password")
+            .eq("team", this.user.team);
+
+          if (
+            data.length === 0 ||
+            data[0].password !== this.user.teamPassword
+          ) {
+            this.$bvToast.toast("팀 비밀번호를 확인해주세요.", {
+              title: "오류",
+              variant: "danger",
+              solid: true,
+            });
+            if (teamError) throw teamError;
+            return;
+          }
+        }
+
+        const updateData = {
+          email: this.user.email,
+          password: this.user.password,
+          name: this.user.name,
+          date: this.user.date,
+          phone: this.user.phone,
+          team: null,
+        };
+
+        if (!this.isNull) {
+          updateData.team = this.user.team;
+        }
         const { error } = await supabase
           .from("users")
-          .update({
-            email: this.user.email,
-            password: this.user.password,
-            name: this.user.name,
-            date: this.user.date,
-            phone: this.user.phone,
-          })
+          .update(updateData)
           .eq("id", this.$route.params.id)
           .single();
-
-        if (error) throw error;
 
         this.$bvToast.toast("회원정보가 업데이트되었습니다.", {
           title: "수정 완료",
           variant: "success",
           solid: true,
         });
+        if (error) throw error;
+
         localStorage.setItem("email", this.user.email);
         this.$store.commit("logIn");
         this.$router.push("/");
-      } catch (error) {
-        console.error("Failed to update user:", error.message);
+      } catch (catchError) {
+        console.error("Failed to update user:", catchError.message);
         this.$bvToast.toast("회원정보 업데이트에 실패했습니다.", {
           title: "오류",
           variant: "danger",
@@ -159,6 +203,7 @@ export default {
         });
       }
     },
+
     async initUserData() {
       this.isLoading = true;
       const token = localStorage.getItem("authToken");
@@ -184,6 +229,16 @@ export default {
       } finally {
         this.isLoading = false;
       }
+    },
+    selectTeam() {
+      this.$bvModal.show("team-modal");
+    },
+    selectTeamFromModal(team) {
+      this.user.team = team;
+    },
+    noTeam() {
+      this.user.team = null;
+      this.$bvModal.hide("team-modal");
     },
   },
   computed: {
