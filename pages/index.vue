@@ -228,14 +228,16 @@ export default {
 .card-group {
   display: flex;
   gap: 20px;
+  align-items: flex-start;
 }
 
 .board-column {
-  min-width: 300px;
-  max-width: 300px;
+  min-width: 270px;
+  max-width: 270px;
   background-color: aliceblue;
   border-radius: 3px;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  height: auto;
 }
 
 .task-item {
