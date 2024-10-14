@@ -30,6 +30,15 @@
       </b-row>
       <b-row>
         <b-col>
+          <b-container v-if="isLoading">
+            <Loading />
+          </b-container>
+          <div
+            class="d-flex justify-content-center"
+            v-else-if="sortedBoardData.length === 0"
+          >
+            <h3>데이터가 없습니다.</h3>
+          </div>
           <b-table
             :items="sortedBoardData"
             :per-page="perPage"
@@ -109,9 +118,11 @@ export default {
       checked: false,
       perPage: 10,
       currentPage: 1,
+      isLoading: true,
     };
   },
   async mounted() {
+    this.isLoading = true;
     const token = localStorage.getItem("authToken");
     if (!token) {
       this.$router.push("/login");
@@ -132,6 +143,7 @@ export default {
     }
 
     this.$store.dispatch("getBoardData", this.checked);
+    this.isLoading = false;
   },
   methods: {
     regist() {
