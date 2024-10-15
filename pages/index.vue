@@ -28,15 +28,59 @@
             class="board-column mb-3 mr-3"
           >
             <template #header>
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">{{ card.cardTitle }}</h5>
-                <b-button
-                  variant="outline-danger"
-                  size="sm"
-                  @click="deleteCard(card.id)"
-                >
-                  <i class="fas fa-trash"></i>
-                </b-button>
+              <div
+                v-if="card.isUpdateMode"
+                class="d-flex justify-content-between align-items-center"
+              >
+                <div>
+                  <input
+                    style="max-width: 135px"
+                    class="mb-0"
+                    v-model="card.cardTitle"
+                    maxlength="8"
+                  />
+                </div>
+                <div class="d-flex">
+                  <b-button
+                    variant="outline-primary"
+                    size="sm"
+                    @click="updateTitle(card.id, card.cardTitle)"
+                    class="mr-1"
+                  >
+                    수정
+                  </b-button>
+                  <b-button
+                    variant="outline-danger"
+                    size="sm"
+                    @click="card.isUpdateMode = false"
+                  >
+                    취소
+                  </b-button>
+                </div>
+              </div>
+              <div
+                class="d-flex justify-content-between align-items-center"
+                v-else
+              >
+                <div>
+                  <h5 class="mb-0">{{ card.cardTitle }}</h5>
+                </div>
+                <div>
+                  <b-button
+                    variant="outline-primary"
+                    size="sm"
+                    @click="card.isUpdateMode = true"
+                  >
+                    수정
+                  </b-button>
+                  <b-button
+                    variant="outline-danger"
+                    size="sm"
+                    @click="deleteCard(card.id)"
+                  >
+                    삭제
+                  </b-button>
+                </div>
               </div>
             </template>
 
@@ -153,6 +197,9 @@ export default {
         const data = JSON.parse(
           JSON.stringify(this.$store.state.cardData.cards)
         );
+        data.forEach((item) => {
+          item.isUpdateMode = false;
+        });
         this.cardData = data.sort((a, b) => a.position - b.position);
       } catch (error) {
         console.error("Error fetching card data:", error);
@@ -190,6 +237,12 @@ export default {
     },
     getModalData(data) {
       console.log(data);
+    },
+    updateTitle(id, cardTitle) {
+      const params = { id, cardTitle };
+      this.$store.dispatch("updateTitle", params);
+      const found = this.cardData.find((item) => item.id === id);
+      found.isUpdateMode = false;
     },
     updateCards() {
       this.cardData.forEach((card, index) => {

@@ -12,6 +12,7 @@
         v-model="addCardData.title"
         placeholder="카드 제목을 입력해주세요"
         trim
+        maxlength="8"
       ></b-form-input>
     </b-form-group>
   </b-modal>

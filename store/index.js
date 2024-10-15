@@ -461,6 +461,19 @@ export const actions = {
       console.error("코멘트 업데이트중 오류 발생:", error);
     }
   },
+  async updateTitle({ commit }, params) {
+    try {
+      const { error } = await supabase
+        .from("cards")
+        .update({
+          cardTitle: params.cardTitle,
+        })
+        .eq("id", params.id);
+      if (error) throw error;
+    } catch (error) {
+      console.error("타이틀 업데이트중 오류 발생:", error);
+    }
+  },
   async getMemberInfo({ commit }) {
     commit("getMemberInfo");
   },
