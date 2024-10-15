@@ -23,16 +23,26 @@
                   :readonly="!this.$store.state.isAuth"
                 ></b-form-textarea>
               </b-form-group>
-              <div class="mt-3">
-                <b-button
-                  v-if="this.$store.state.isAuth"
-                  variant="primary"
-                  @click="updateBoard"
-                  >수정</b-button
-                >
-                <b-button variant="secondary" @click="cancel" class="ml-2"
-                  >취소</b-button
-                >
+              <div class="mt-3 d-flex justify-content-between">
+                <div>
+                  <b-button
+                    v-if="this.$store.state.isAuth"
+                    variant="primary"
+                    @click="updateBoard"
+                    >수정</b-button
+                  >
+                  <b-button variant="secondary" @click="cancel" class="ml-2"
+                    >취소</b-button
+                  >
+                </div>
+                <div>
+                  <b-button
+                    v-if="this.$store.state.isAuth"
+                    variant="danger"
+                    @click="deleteBoard"
+                    >삭제</b-button
+                  >
+                </div>
               </div>
             </b-form>
           </b-card>
@@ -71,6 +81,26 @@ export default {
       } else {
         alert("게시글 정보가 업데이트되었습니다.");
         this.$router.push("/board");
+      }
+    },
+    async deleteBoard() {
+      try {
+        const confirmResult = confirm("정말 게시글을 삭제하시겠습니까?");
+        if (confirmResult) {
+          const { error } = await supabase
+            .from("boards")
+            .delete()
+            .eq("id", this.$route.params.id);
+          alert("데이터가 삭제되었습니다.");
+          this.$router.push("/board");
+          if (error) throw error;
+        } else if (!confirmResult) {
+          return;
+        } else {
+          alert("데이터를 삭제하는중 오류가 발생했습니다.");
+        }
+      } catch (error) {
+        console.error("데이터를 삭제하는중 오류가 발생했습니다.");
       }
     },
   },
