@@ -4,6 +4,15 @@
       <b-row class="mb-3">
         <b-col>
           <b-button
+            v-if="noTeam"
+            variant="primary"
+            style="padding-right: 20px"
+            v-b-modal.add-team-modal
+          >
+            <i class="fas fa-plus mr-2"></i>팀 생성
+          </b-button>
+          <b-button
+            v-else
             variant="primary"
             style="padding-right: 20px"
             v-b-modal.add-card-modal
@@ -139,6 +148,7 @@
       @updateGroup="updateGroup"
     />
     <AddCardPopup @addCard="getCard" />
+    <AddTeamPopup @addTeam="getTeam" />
     <AddListPopup @addList="getCard" :listId="listId" />
   </div>
 </template>
@@ -147,14 +157,17 @@
 import draggable from "vuedraggable";
 import Popup from "../components/Popup.vue";
 import AddCardPopup from "../components/AddCardPopup.vue";
+import AddTeamPopup from "../components/AddTeamPopup.vue";
 import AddListPopup from "../components/AddListPopup.vue";
 import jwt from "jsonwebtoken";
+import { supabase } from "~/plugins/supabase.js";
 
 export default {
   components: {
     draggable,
     Popup,
     AddCardPopup,
+    AddTeamPopup,
     AddListPopup,
   },
   data() {
@@ -163,6 +176,7 @@ export default {
       showModal: false,
       listId: null,
       cardId: null,
+      noTeam: true,
       modalId: "modal-1",
     };
   },
@@ -176,6 +190,7 @@ export default {
     try {
       jwt.verify(token, process.env.JWT_SECRET);
       await this.getCard();
+      await this.getTeam();
     } catch (e) {
       if (e.name === "TokenExpiredError") {
         this.$bvToast.toast("토큰이 만료되었습니다. 다시 로그인해주세요.", {
@@ -208,6 +223,19 @@ export default {
           variant: "danger",
           solid: true,
         });
+      }
+    },
+    async getTeam() {
+      const localEmail = localStorage.getItem("email");
+      const { data, error } = await supabase
+        .from("users")
+        .select("team")
+        .eq("email", localEmail);
+      console.log(data);
+      if (data[0].team === null) {
+        this.noTeam = true;
+      } else {
+        this.noTeam = false;
       }
     },
     addList(data) {
@@ -260,6 +288,10 @@ export default {
     },
     async updateGroup() {
       await this.getCard();
+    },
+    hideAddTeamPopup() {
+      console.log("emit");
+      this.$bvModal.hide("add-team-modal");
     },
   },
 };
