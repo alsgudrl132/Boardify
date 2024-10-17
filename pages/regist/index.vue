@@ -23,13 +23,34 @@
           label="비밀번호:"
           label-for="password"
         >
-          <b-form-input
-            id="password"
-            v-model="user.password"
-            type="password"
-            placeholder="비밀번호를 입력하세요"
-            required
-          ></b-form-input>
+          <div class="position-relative">
+            <b-form-input
+              id="password"
+              v-model="user.password"
+              :type="passwordInputType"
+              placeholder="비밀번호를 입력하세요"
+              required
+              v-b-tooltip.focus="
+                '8~12자의 영문대소문자, 숫자, 특수문자 중 2종류 이상을 조합한 10자리 이상 또는 3종류 이상을 조합한 8자리 이상'
+              "
+              @keyup="checkRegex"
+            ></b-form-input>
+            <img
+              v-if="isPasswordHidden"
+              :src="require('~/assets/image/eye-close.png')"
+              class="eye"
+              @click="togglePasswordVisibility('password')"
+            />
+            <img
+              v-else
+              :src="require('~/assets/image/eye.png')"
+              class="eye"
+              @click="togglePasswordVisibility('password')"
+            />
+          </div>
+          <span :class="{ green: isRegexMatched, red: !isRegexMatched }">{{
+            regexMessage
+          }}</span>
         </b-form-group>
 
         <b-form-group id="name-group" label="이름:" label-for="name">
@@ -39,6 +60,7 @@
             type="text"
             placeholder="이름을 입력하세요"
             required
+            maxlength="20"
           ></b-form-input>
         </b-form-group>
 
@@ -58,19 +80,38 @@
             type="text"
             placeholder="010-0000-0000"
             required
+            @keyup="checkPhoneRegex"
           ></b-form-input>
+          <span
+            :class="{ green: isPhoneRegexMatched, red: !isPhoneRegexMatched }"
+            >{{ phoneRegexMessage }}</span
+          >
         </b-form-group>
 
         <b-button variant="primary" class="w-100 mb-3" @click="selectTeam"
           >팀 선택</b-button
         >
         <b-form-input onlyread disabled class="mb-3" v-model="user.team" />
-        <b-form-input
-          placeholder="팀 비밀번호를 입력해주세요."
-          class="mb-5"
-          type="password"
-          v-model="user.teamPassword"
-        />
+        <div class="position-relative">
+          <b-form-input
+            placeholder="팀 비밀번호를 입력해주세요."
+            class="mb-5"
+            :type="teamPasswordInputType"
+            v-model="user.teamPassword"
+          />
+          <img
+            v-if="isTeamPasswordHidden"
+            :src="require('~/assets/image/eye-close.png')"
+            class="eye"
+            @click="togglePasswordVisibility('teamPassword')"
+          />
+          <img
+            v-else
+            :src="require('~/assets/image/eye.png')"
+            class="eye"
+            @click="togglePasswordVisibility('teamPassword')"
+          />
+        </div>
         <div class="d-flex justify-content-between">
           <b-button type="submit" variant="primary" class="px-4"
             >회원가입</b-button
@@ -108,12 +149,37 @@ export default {
         date: "",
         phone: "",
         team: "",
+        teamPassword: "",
       },
+      isRegexMatched: false,
+      regexMessage: "",
+      isPhoneRegexMatched: false,
+      phoneRegexMessage: "",
+      isPasswordHidden: true,
+      isTeamPasswordHidden: true,
+      passwordInputType: "password",
+      teamPasswordInputType: "password",
     };
   },
   methods: {
     async register() {
       try {
+        if (this.isRegexMatched === false) {
+          this.$bvToast.toast("비밀번호를 확인해주세요.", {
+            title: "오류",
+            variant: "danger",
+            solid: true,
+          });
+          return;
+        } else if (this.isPhoneRegexMatched === false) {
+          this.$bvToast.toast("핸드폰번호를 확인해주세요.", {
+            title: "오류",
+            variant: "danger",
+            solid: true,
+          });
+          return;
+        }
+
         const { data: existingUsers, error: fetchError } = await supabase
           .from("users")
           .select("*")
@@ -223,11 +289,41 @@ export default {
       this.user.team = null;
       this.$bvModal.hide("team-modal");
     },
+    checkRegex() {
+      const regex =
+        /^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])|(?=.*[a-z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])|(?=.*[A-Z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])|(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])).{10,})$/;
+      this.isRegexMatched = regex.test(this.user.password);
+      this.regexMessage = this.isRegexMatched ? "사용 가능" : "사용 불가";
+    },
+    checkPhoneRegex() {
+      const regex = /^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;
+      this.isPhoneRegexMatched = regex.test(this.user.phone);
+      this.phoneRegexMessage = this.isPhoneRegexMatched
+        ? "사용 가능"
+        : "사용 불가";
+    },
+    togglePasswordVisibility(field) {
+      if (field === "password") {
+        this.isPasswordHidden = !this.isPasswordHidden;
+        this.passwordInputType = this.isPasswordHidden ? "password" : "text";
+      } else if (field === "teamPassword") {
+        this.isTeamPasswordHidden = !this.isTeamPasswordHidden;
+        this.teamPasswordInputType = this.isTeamPasswordHidden
+          ? "password"
+          : "text";
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
 .register-container {
   display: flex;
   justify-content: center;
@@ -250,5 +346,30 @@ export default {
 .login-link {
   color: #0969da;
   cursor: pointer;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .eye {
+    right: 8px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .eye {
+    right: 6px;
+  }
 }
 </style>

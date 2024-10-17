@@ -23,13 +23,28 @@
           label="비밀번호:"
           label-for="password"
         >
-          <b-form-input
-            id="password"
-            v-model="user.password"
-            type="password"
-            placeholder="비밀번호를 입력하세요"
-            required
-          ></b-form-input>
+          <div class="position-relative">
+            <b-form-input
+              id="password"
+              class="password"
+              v-model="user.password"
+              :type="passwordInputType"
+              placeholder="비밀번호를 입력하세요"
+              required
+            ></b-form-input>
+            <img
+              v-if="isPasswordHidden"
+              :src="require('~/assets/image/eye-close.png')"
+              class="eye"
+              @click="togglePasswordVisibility('password')"
+            />
+            <img
+              v-else
+              :src="require('~/assets/image/eye.png')"
+              class="eye"
+              @click="togglePasswordVisibility('password')"
+            />
+          </div>
         </b-form-group>
 
         <div class="d-flex justify-content-between">
@@ -66,6 +81,10 @@ export default {
         email: "",
         password: "",
       },
+      isPasswordHidden: true,
+      isTeamPasswordHidden: true,
+      passwordInputType: "password",
+      teamPasswordInputType: "password",
     };
   },
   methods: {
@@ -89,11 +108,7 @@ export default {
           localStorage.setItem("authToken", token);
           localStorage.setItem("email", this.user.email);
           this.$store.dispatch("logIn");
-          this.$bvToast.toast("로그인 되었습니다.", {
-            title: "성공",
-            variant: "success",
-            solid: true,
-          });
+          alert("로그인 되었습니다.");
           this.$router.push("/");
         } else {
           this.$bvToast.toast("이메일 또는 비밀번호를 확인해주세요", {
@@ -113,6 +128,17 @@ export default {
     },
     cancel() {
       this.$router.push("/");
+    },
+    togglePasswordVisibility(field) {
+      if (field === "password") {
+        this.isPasswordHidden = !this.isPasswordHidden;
+        this.passwordInputType = this.isPasswordHidden ? "password" : "text";
+      } else if (field === "teamPassword") {
+        this.isTeamPasswordHidden = !this.isTeamPasswordHidden;
+        this.teamPasswordInputType = this.isTeamPasswordHidden
+          ? "password"
+          : "text";
+      }
     },
   },
 };
@@ -136,5 +162,29 @@ export default {
 .already-logged-in {
   max-width: 400px;
   width: 100%;
+}
+.position-relative {
+  position: relative;
+}
+
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .eye {
+    right: 8px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .eye {
+    right: 6px;
+  }
 }
 </style>
