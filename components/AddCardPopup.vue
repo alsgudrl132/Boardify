@@ -31,7 +31,7 @@ export default {
     async addCard() {
       if (this.addCardData.title.trim()) {
         await this.$store.dispatch("addCard", this.addCardData);
-        await this.$emit("addCard");
+        this.$emit("addCard");
         this.addCardData.title = "";
       }
     },

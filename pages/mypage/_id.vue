@@ -59,6 +59,7 @@
           <b-form-input onlyread disabled class="mb-3" v-model="user.team" />
           <b-form-input
             placeholder="팀 비밀번호를 입력해주세요."
+            type="password"
             class="mb-5"
             v-model="user.teamPassword"
           />

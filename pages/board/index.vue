@@ -131,7 +131,6 @@ export default {
 
     try {
       jwt.verify(token, process.env.JWT_SECRET);
-      await this.initUserData();
     } catch (e) {
       if (e.name === "TokenExpiredError") {
         alert("토큰이 만료되었습니다 다시 로그인해주세요.");

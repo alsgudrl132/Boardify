@@ -15,7 +15,7 @@
             v-else
             variant="primary"
             style="padding-right: 20px"
-            v-b-modal.add-card-modal
+            @click="$bvModal.show('add-card-modal')"
           >
             <i class="fas fa-plus mr-2"></i>카드 추가
           </b-button>

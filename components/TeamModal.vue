@@ -1,17 +1,31 @@
 <template>
   <b-modal id="team-modal" title="팀 목록" hide-footer>
     <b-list-group>
-      <b-button variant="outline-primary" class="mb-3" @click="noTeam"
-        >팀 없음</b-button
-      >
-      <b-list-group-item
-        v-for="team in displayedTeams"
-        :key="team.id"
-        button
-        @click="selectTeam(team.team)"
-      >
-        {{ team.team }}
-      </b-list-group-item>
+      <b-input
+        type="text"
+        @input="searchKeyword"
+        v-model="keyword"
+        placeholder="검색할 팀 이름을 입력해주세요."
+        class="mb-3"
+      />
+      <b-button variant="outline-primary" class="mb-3" @click="noTeam">
+        팀 없음
+      </b-button>
+      <div v-if="filterData.length > 0">
+        <b-list-group-item
+          v-for="team in displayedTeams"
+          :key="team.id"
+          button
+          @click="selectTeam(team.team)"
+        >
+          <li style="list-style-type: none">
+            {{ team.team }}
+          </li>
+        </b-list-group-item>
+      </div>
+      <div v-else>
+        <b-list-group-item> 데이터가 존재하지 않습니다 </b-list-group-item>
+      </div>
     </b-list-group>
     <div class="mt-3 d-flex justify-content-center">
       <b-pagination-nav
@@ -34,16 +48,22 @@ export default {
       teams: [],
       currentPage: 1,
       perPage: 5,
+      keyword: "",
+      filterData: [],
     };
   },
   computed: {
     totalPages() {
-      return Math.ceil(this.teams.length / this.perPage);
+      if (this.filterData.length < 1) {
+        return 1;
+      } else {
+        return Math.ceil(this.filterData.length / this.perPage);
+      }
     },
     displayedTeams() {
       const start = (this.currentPage - 1) * this.perPage;
       const end = start + this.perPage;
-      return this.teams.slice(start, end);
+      return this.filterData.slice(start, end);
     },
   },
   methods: {
@@ -60,6 +80,7 @@ export default {
           ...new Set(teams.map((item) => JSON.stringify(item))),
         ].map((item) => JSON.parse(item));
         this.teams = newTeams;
+        this.filterData = newTeams;
       } catch (error) {
         console.error(error);
       }
@@ -72,6 +93,12 @@ export default {
       this.$emit("noTeam");
       this.$bvModal.hide("team-modal");
     },
+    searchKeyword() {
+      this.filterData = this.teams?.filter((item) =>
+        item.team?.includes(this.keyword)
+      );
+      this.currentPage = 1; // 필터링 후 첫 페이지로 설정
+    },
   },
   watch: {
     "$route.query.page"(newPage) {
@@ -80,7 +107,7 @@ export default {
   },
   mounted() {
     this.getTeams();
-    this.currentPage = parseInt(this.$route.query.page) || 1;
+    this.currentPage = 1; // 첫 페이지로 설정
   },
 };
 </script>

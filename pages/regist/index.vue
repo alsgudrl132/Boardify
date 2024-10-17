@@ -68,6 +68,7 @@
         <b-form-input
           placeholder="팀 비밀번호를 입력해주세요."
           class="mb-5"
+          type="password"
           v-model="user.teamPassword"
         />
         <div class="d-flex justify-content-between">
