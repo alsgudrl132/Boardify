@@ -30,7 +30,6 @@ export default {
   modules: [["bootstrap-vue/nuxt", "@nuxtjs/supabase"]],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  buildDir: "dist",
   build: {
     babel: {
       presets: [
