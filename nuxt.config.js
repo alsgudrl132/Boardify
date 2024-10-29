@@ -27,7 +27,7 @@ export default {
   buildModules: ["@nuxtjs/dotenv"],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [["bootstrap-vue/nuxt", "@nuxtjs/supabase"]],
+  modules: ["bootstrap-vue/nuxt", "@nuxtjs/supabase"],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
@@ -57,5 +57,10 @@ export default {
   server: {
     port: process.env.PORT || 3000,
     host: "0.0.0.0",
+  },
+
+  supabase: {
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_ANON_KEY,
   },
 };
