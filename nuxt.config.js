@@ -41,15 +41,21 @@ export default {
         ],
       ],
     },
+    // Vercel 배포를 위한 추가 설정
+    publicPath: "/_nuxt/",
   },
 
   target: "server",
-  env: {
+
+  // 환경 변수 설정
+  publicRuntimeConfig: {
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   },
 
+  // 서버 설정
   server: {
-    port: process.env.NODE_ENV === "production" ? null : 5000,
+    port: process.env.PORT || 3000,
+    host: "0.0.0.0",
   },
 };
