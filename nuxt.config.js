@@ -32,9 +32,14 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     babel: {
-      presets({ isDev, isHMR }) {
-        return [["@nuxt/babel-preset-app", { corejs: { version: 3 } }]];
-      },
+      presets: [
+        [
+          "@nuxt/babel-preset-app",
+          {
+            corejs: { version: 2 },
+          },
+        ],
+      ],
     },
   },
 
