@@ -214,8 +214,6 @@ export const actions = {
 
       if (cardError) {
         console.error("카드 업데이트 중 오류 발생:", cardError);
-      } else {
-        console.log(`ID가 ${item.id}인 카드가 성공적으로 업데이트되었습니다.`);
       }
 
       // Update the card groups
@@ -235,10 +233,6 @@ export const actions = {
 
         if (groupError) {
           console.error("카드 그룹 업데이트 중 오류 발생:", groupError);
-        } else {
-          console.log(
-            `ID가 ${cardGroup.id}인 카드 그룹이 성공적으로 업데이트되었습니다.`
-          );
         }
       }
     }
@@ -373,7 +367,6 @@ export const actions = {
         .select("*")
         .eq("cardgroupid", id);
       comments.map((item, index) => {
-        console.log(item);
         const date = new Date(item.commentdate);
         let day = date.getDate();
         let month = date.getMonth() + 1;

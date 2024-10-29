@@ -216,6 +216,13 @@ export default {
           item.isUpdateMode = false;
         });
         this.cardData = data.sort((a, b) => a.position - b.position);
+        this.cardData.forEach((card, index) => {
+          if (card.cardgroups && Array.isArray(card.cardgroups)) {
+            this.cardData[index].cardGroups = card.cardgroups.sort(
+              (a, b) => a.position - b.position
+            );
+          }
+        });
       } catch (error) {
         console.error("Error fetching card data:", error);
         this.$bvToast.toast("카드 데이터를 불러오는데 실패했습니다.", {
@@ -231,7 +238,6 @@ export default {
         .from("users")
         .select("team")
         .eq("email", localEmail);
-      console.log(data);
       if (data[0].team === null) {
         this.noTeam = true;
       } else {
@@ -279,10 +285,13 @@ export default {
       this.$store.dispatch("updateCards", this.cardData);
     },
     updateLists() {
-      this.cardData.forEach((card) => {
-        card.cardgroups.forEach((group) => {
-          group.cardId = card.id;
-        });
+      this.cardData.forEach((cardItem) => {
+        if (cardItem.cardgroups && Array.isArray(cardItem.cardgroups)) {
+          cardItem.cardgroups.forEach((group, index) => {
+            group.cardId = cardItem.id;
+            group.position = index;
+          });
+        }
       });
       this.$store.dispatch("updateLists", this.cardData);
     },

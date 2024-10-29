@@ -40,7 +40,7 @@
         type="password"
         maxlength="16"
         class="mb-3 add-team-password-input"
-        @keyup="checkRegex"
+        @keyup="checkRegexThisComponent"
       ></b-form-input>
       <span :class="{ green: isRegexMatched, red: !isRegexMatched }">{{
         regexMessage
@@ -64,6 +64,8 @@
 
 <script>
 import { supabase } from "~/plugins/supabase.js";
+import utils from "~/plugins/utility.js";
+
 export default {
   data() {
     return {
@@ -77,12 +79,9 @@ export default {
     };
   },
   methods: {
-    checkRegex() {
-      const regex =
-        /^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])|(?=.*[a-z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])|(?=.*[A-Z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])|(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])).{10,})$/;
-      this.isRegexMatched = regex.test(this.addTeamData.password);
-      this.regexMessage = this.isRegexMatched ? "사용 가능" : "사용 불가";
-      this.checkPassword();
+    checkRegexThisComponent() {
+      this.isRegexMatched = utils.checkRegex(this.addTeamData.password);
+      this.regexMessage = utils.checkRegexMessage(this.addTeamData.password);
     },
     checkPassword() {
       this.isPasswordMatched =

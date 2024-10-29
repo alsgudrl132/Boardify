@@ -32,7 +32,7 @@
                 v-b-tooltip.focus="
                   '8~12자의 영문대소문자, 숫자, 특수문자 중 2종류 이상을 조합한 10자리 이상 또는 3종류 이상을 조합한 8자리 이상'
                 "
-                @keyup="checkRegex"
+                @keyup="checkRegexThisComponent"
               >
               </b-form-input>
               <!-- 닫힌모양  -> 누르면 열린모양 -->
@@ -81,7 +81,7 @@
               placeholder="010-0000-0000"
               class="mb-2"
               required
-              @keyup="checkPhoneRegex"
+              @keyup="checkPhoneRegexThisComponent"
             ></b-form-input
             ><span
               :class="{ green: isPhoneRegexMatched, red: !isPhoneRegexMatched }"
@@ -135,6 +135,7 @@ import store from "@/store/index.js";
 import jwt from "jsonwebtoken";
 import TeamModal from "../../components/TeamModal.vue";
 import { supabase } from "~/plugins/supabase.js";
+import utils from "~/plugins/utility.js";
 
 export default {
   store: store,
@@ -175,8 +176,8 @@ export default {
     try {
       jwt.verify(token, process.env.JWT_SECRET);
       await this.initUserData();
-      this.checkRegex();
-      this.checkPhoneRegex();
+      this.checkRegexThisComponent();
+      this.checkPhoneRegexThisComponent();
     } catch (e) {
       if (e.name === "TokenExpiredError") {
         this.$bvToast.toast("토큰이 만료되었습니다. 다시 로그인해주세요.", {
@@ -314,18 +315,13 @@ export default {
       this.user.team = null;
       this.$bvModal.hide("team-modal");
     },
-    checkRegex() {
-      const regex =
-        /^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])|(?=.*[a-z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])|(?=.*[A-Z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])|(?=.*\d)(?=.*[`~!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?])).{10,})$/;
-      this.isRegexMatched = regex.test(this.user.password);
-      this.regexMessage = this.isRegexMatched ? "사용 가능" : "사용 불가";
+    checkRegexThisComponent() {
+      this.isRegexMatched = utils.checkRegex(this.user.password);
+      this.regexMessage = utils.checkRegexMessage(this.user.password);
     },
-    checkPhoneRegex() {
-      const regex = /^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;
-      this.isPhoneRegexMatched = regex.test(this.user.phone);
-      this.phoneRegexMessage = this.isPhoneRegexMatched
-        ? "사용 가능"
-        : "사용 불가";
+    checkPhoneRegexThisComponent() {
+      this.isPhoneRegexMatched = utils.checkPhoneRegex(this.user.phone);
+      this.phoneRegexMessage = utils.checkPhoneRegexMessage(this.user.phone);
     },
     togglePasswordVisibility(field) {
       if (field === "password") {
