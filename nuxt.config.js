@@ -30,7 +30,13 @@ export default {
   modules: [["bootstrap-vue/nuxt", "@nuxtjs/supabase"]],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    babel: {
+      presets({ isDev, isHMR }) {
+        return [["@nuxt/babel-preset-app", { corejs: { version: 3 } }]];
+      },
+    },
+  },
 
   env: {
     SUPABASE_URL: process.env.SUPABASE_URL,
