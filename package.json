@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt --port 3002",
+    "dev": "nuxt --port",
     "db": "json-server --watch db.json --port 3003",
     "build": "nuxt build",
     "start": "nuxt start",
