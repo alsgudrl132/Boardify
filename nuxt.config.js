@@ -30,37 +30,10 @@ export default {
   modules: [["bootstrap-vue/nuxt", "@nuxtjs/supabase"]],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-    babel: {
-      presets: [
-        [
-          "@nuxt/babel-preset-app",
-          {
-            corejs: { version: 2 },
-          },
-        ],
-      ],
-    },
-    // Vercel 배포를 위한 추가 설정
-    publicPath: "/_nuxt/",
-  },
+  build: {},
 
-  target: "server",
-
-  // 환경 변수 설정
-  publicRuntimeConfig: {
+  env: {
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
-  },
-
-  // 서버 설정
-  server: {
-    port: process.env.PORT || 3000,
-    host: "0.0.0.0",
-  },
-
-  supabase: {
-    url: process.env.SUPABASE_URL,
-    key: process.env.SUPABASE_ANON_KEY,
   },
 };
