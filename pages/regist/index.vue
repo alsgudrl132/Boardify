@@ -35,18 +35,6 @@
               "
               @keyup="checkRegexThisComponent"
             ></b-form-input>
-            <img
-              v-if="isPasswordHidden"
-              :src="require('~/assets/image/eye-close.png')"
-              class="eye"
-              @click="togglePasswordVisibility('password')"
-            />
-            <img
-              v-else
-              :src="require('~/assets/image/eye.png')"
-              class="eye"
-              @click="togglePasswordVisibility('password')"
-            />
           </div>
           <span :class="{ green: isRegexMatched, red: !isRegexMatched }">{{
             regexMessage
@@ -98,18 +86,6 @@
             class="mb-5"
             :type="teamPasswordInputType"
             v-model="user.teamPassword"
-          />
-          <img
-            v-if="isTeamPasswordHidden"
-            :src="require('~/assets/image/eye-close.png')"
-            class="eye"
-            @click="togglePasswordVisibility('teamPassword')"
-          />
-          <img
-            v-else
-            :src="require('~/assets/image/eye.png')"
-            class="eye"
-            @click="togglePasswordVisibility('teamPassword')"
           />
         </div>
         <div class="d-flex justify-content-between">
@@ -203,15 +179,6 @@ export default {
             .eq("team", this.user.team);
 
           if (teamError) throw teamError;
-
-          if (teamData.length === 0) {
-            this.$bvToast.toast("존재하지 않는 팀입니다.", {
-              title: "오류",
-              variant: "danger",
-              solid: true,
-            });
-            return;
-          }
 
           if (teamData[0].password === this.user.teamPassword) {
             const { user, error } = await supabase.auth.signUp({
@@ -314,58 +281,15 @@ export default {
 </script>
 
 <style scoped>
-.red {
-  color: red;
-}
-.green {
-  color: green;
-}
-.register-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f8f9fa;
-}
-
 .register-card {
-  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.card-body {
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.already-logged-in {
-  max-width: 400px;
-  width: 100%;
-}
-
-.login-link {
-  color: #0969da;
-  cursor: pointer;
-}
-
-.position-relative {
-  position: relative;
-}
-
-.eye {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0.5;
-  cursor: pointer;
-}
-
-@media screen and (max-width: 767px) {
-  .eye {
-    right: 8px;
-  }
-}
-
-@media screen and (max-width: 360px) {
-  .eye {
-    right: 6px;
-  }
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>
