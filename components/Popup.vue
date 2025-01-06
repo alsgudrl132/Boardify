@@ -277,6 +277,7 @@ export default {
       if (confirm("정말 삭제하시겠습니까?")) {
         this.$store.dispatch("deleteList", this.cardId);
         this.$emit("updateGroup", this.cardId);
+        this.$emit("deleteList");
       } else return;
     },
   },

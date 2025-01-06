@@ -146,6 +146,7 @@
       @addComment="openPopup(groupData)"
       @deleteComment="openPopup(groupData)"
       @updateGroup="updateGroup"
+      @deleteList="closeModal"
     />
     <AddCardPopup @addCard="getCard" />
     <AddTeamPopup @addTeam="getTeam" />
@@ -266,6 +267,9 @@ export default {
       this.cardId = group.id;
       this.showModal = true;
     },
+    closeModal() {
+      this.showModal = false;
+    },
     modalState(state) {
       this.showModal = state;
     },
@@ -299,7 +303,6 @@ export default {
       await this.getCard();
     },
     hideAddTeamPopup() {
-      console.log("emit");
       this.$bvModal.hide("add-team-modal");
     },
   },

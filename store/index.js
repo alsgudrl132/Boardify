@@ -194,8 +194,6 @@ export const actions = {
 
         if (error) {
           console.error(`Error updating card with id ${card.id}:`, error);
-        } else {
-          console.log(`Card with id ${card.id} updated successfully`);
         }
       }
     } catch (error) {

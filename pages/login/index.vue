@@ -75,6 +75,18 @@ import jwt from "jsonwebtoken";
 import { supabase } from "~/plugins/supabase.js";
 
 export default {
+  beforeRouteEnter(to, from, next) {
+    if (process.client) {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        next("/");
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  },
   data() {
     return {
       user: {

@@ -114,6 +114,18 @@ import TeamModal from "../../components/TeamModal.vue";
 import utils from "~/plugins/utility.js";
 
 export default {
+  beforeRouteEnter(to, from, next) {
+    if (process.client) {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        next("/");
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  },
   components: {
     TeamModal,
   },

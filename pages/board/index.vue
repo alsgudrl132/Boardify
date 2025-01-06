@@ -136,8 +136,6 @@ export default {
         alert("토큰이 만료되었습니다 다시 로그인해주세요.");
         this.$store.dispatch("logOut");
         this.$router.push("/login");
-      } else {
-        console.log(e);
       }
     }
 
