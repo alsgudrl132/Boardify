@@ -97,7 +97,7 @@ export default {
       this.filterData = this.teams?.filter((item) =>
         item.team?.includes(this.keyword)
       );
-      this.currentPage = 1; // 필터링 후 첫 페이지로 설정
+      this.currentPage = 1;
     },
   },
   watch: {
@@ -107,7 +107,7 @@ export default {
   },
   mounted() {
     this.getTeams();
-    this.currentPage = 1; // 첫 페이지로 설정
+    this.currentPage = 1;
   },
 };
 </script>

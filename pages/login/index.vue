@@ -6,7 +6,18 @@
       </b-alert>
     </div>
     <b-card v-else class="login-card">
-      <h2 class="text-center mb-4">로그인</h2>
+      <div class="welcome-message text-center mb-4">
+        <h2 class="mb-3">Boardify</h2>
+        <p class="text-muted">
+          효율적인 협업을 위한 프로젝트 관리 도구입니다.<br />
+          팀원들과 함께 프로젝트를 관리하고 소통해보세요.
+        </p>
+      </div>
+
+      <h3 class="text-center mb-4">로그인</h3>
+      <b-button variant="primary" class="w-100 mb-3" @click="testLogin">
+        테스트 계정 이용해보기
+      </b-button>
       <b-form @submit.prevent="login">
         <b-form-group id="email-group" label="이메일:" label-for="email">
           <b-form-input
@@ -47,24 +58,24 @@
           </div>
         </b-form-group>
 
-        <div class="d-flex justify-content-between">
-          <b-button type="submit" variant="primary" class="px-4"
+        <div class="d-flex justify-content-between mb-4">
+          <b-button type="submit" variant="primary" class="w-100 mr-2"
             >로그인</b-button
           >
-          <b-button variant="outline-secondary" @click="cancel" class="px-4"
+          <b-button
+            variant="outline-secondary"
+            @click="cancel"
+            class="w-100 ml-2"
             >취소</b-button
           >
         </div>
       </b-form>
-      <div class="d-flex justify-content-center mt-3 ml-5 mr-5">
-        <p>
-          처음 방문하십니까?
-          <b-nav>
-            <b-nav-item to="/regist" style="color: #0969da; cursor: pointer"
-              >회원가입하기</b-nav-item
-            ></b-nav
-          >
-        </p>
+
+      <div class="text-center mt-4 registration-section">
+        <p class="mb-2">아직 계정이 없으신가요?</p>
+        <b-button to="/regist" variant="outline-primary" class="w-100">
+          새로운 계정 만들기
+        </b-button>
       </div>
     </b-card>
   </div>
@@ -87,6 +98,7 @@ export default {
       next();
     }
   },
+  middleware: "auth",
   data() {
     return {
       user: {
@@ -120,11 +132,15 @@ export default {
           localStorage.setItem("authToken", token);
           localStorage.setItem("email", this.user.email);
           this.$store.dispatch("logIn");
-          alert("로그인 되었습니다.");
+          this.$bvToast.toast("로그인되었습니다.", {
+            title: "환영합니다!",
+            variant: "success",
+            solid: true,
+          });
           this.$router.push("/");
         } else {
           this.$bvToast.toast("이메일 또는 비밀번호를 확인해주세요", {
-            title: "오류",
+            title: "로그인 실패",
             variant: "danger",
             solid: true,
           });
@@ -137,6 +153,10 @@ export default {
           solid: true,
         });
       }
+    },
+    testLogin() {
+      this.user.email = "test@test.com";
+      this.user.password = "qwer1234!!";
     },
     cancel() {
       this.$router.push("/");
@@ -161,20 +181,39 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f8f9fa;
+  padding: 20px;
 }
 
 .login-card {
   width: 100%;
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.welcome-message {
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.welcome-message h2 {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.welcome-message p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #666;
 }
 
 .already-logged-in {
   max-width: 400px;
   width: 100%;
 }
+
 .position-relative {
   position: relative;
 }
@@ -186,17 +225,48 @@ export default {
   transform: translateY(-50%);
   opacity: 0.5;
   cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.eye:hover {
+  opacity: 0.8;
+}
+
+.registration-section {
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.registration-section p {
+  color: #666;
 }
 
 @media screen and (max-width: 767px) {
+  .login-card {
+    padding: 1.5rem;
+  }
+
   .eye {
     right: 8px;
+  }
+
+  .welcome-message {
+    padding: 15px 0;
   }
 }
 
 @media screen and (max-width: 360px) {
+  .login-card {
+    padding: 1rem;
+  }
+
   .eye {
     right: 6px;
+  }
+
+  .welcome-message h2 {
+    font-size: 1.5rem;
   }
 }
 </style>

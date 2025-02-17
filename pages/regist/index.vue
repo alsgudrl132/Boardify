@@ -6,7 +6,15 @@
       </b-alert>
     </div>
     <b-card v-else class="register-card">
-      <h2 class="text-center mb-4">회원가입</h2>
+      <div class="welcome-message text-center mb-4">
+        <h2 class="mb-3">Boardify</h2>
+        <p class="text-muted">
+          팀과 함께하는 새로운 시작!<br />
+          지금 바로 회원가입하고 시작하세요.
+        </p>
+      </div>
+
+      <h3 class="text-center mb-4">회원가입</h3>
       <b-form @submit.prevent="register">
         <b-form-group id="email-group" label="이메일:" label-for="email">
           <b-form-input
@@ -35,10 +43,28 @@
               "
               @keyup="checkRegexThisComponent"
             ></b-form-input>
+            <img
+              v-if="isPasswordHidden"
+              :src="require('~/assets/image/eye-close.png')"
+              class="eye"
+              @click="togglePasswordVisibility('password')"
+            />
+            <img
+              v-else
+              :src="require('~/assets/image/eye.png')"
+              class="eye"
+              @click="togglePasswordVisibility('password')"
+            />
           </div>
-          <span :class="{ green: isRegexMatched, red: !isRegexMatched }">{{
-            regexMessage
-          }}</span>
+          <small
+            :class="{
+              'text-success': isRegexMatched,
+              'text-danger': !isRegexMatched,
+            }"
+            class="form-text"
+          >
+            {{ regexMessage }}
+          </small>
         </b-form-group>
 
         <b-form-group id="name-group" label="이름:" label-for="name">
@@ -70,44 +96,77 @@
             required
             @keyup="checkPhoneRegexThisComponent"
           ></b-form-input>
-          <span
-            :class="{ green: isPhoneRegexMatched, red: !isPhoneRegexMatched }"
-            >{{ phoneRegexMessage }}</span
+          <small
+            :class="{
+              'text-success': isPhoneRegexMatched,
+              'text-danger': !isPhoneRegexMatched,
+            }"
+            class="form-text"
           >
+            {{ phoneRegexMessage }}
+          </small>
         </b-form-group>
 
-        <b-button variant="primary" class="w-100 mb-3" @click="selectTeam"
-          >팀 선택</b-button
-        >
-        <b-form-input onlyread disabled class="mb-3" v-model="user.team" />
-        <div class="position-relative">
+        <div class="team-section mb-4">
+          <b-button
+            variant="outline-primary"
+            class="w-100 mb-3"
+            @click="selectTeam"
+          >
+            <i class="fas fa-users mr-2"></i>팀 선택
+          </b-button>
           <b-form-input
-            placeholder="팀 비밀번호를 입력해주세요."
-            class="mb-5"
-            :type="teamPasswordInputType"
-            v-model="user.teamPassword"
+            readonly
+            disabled
+            class="mb-3"
+            v-model="user.team"
+            placeholder="선택된 팀이 없습니다"
           />
+          <div v-if="user.team && user.team !== null" class="position-relative">
+            <b-form-input
+              placeholder="팀 비밀번호를 입력해주세요."
+              :type="teamPasswordInputType"
+              v-model="user.teamPassword"
+              class="mb-3"
+            />
+            <img
+              v-if="isTeamPasswordHidden"
+              :src="require('~/assets/image/eye-close.png')"
+              class="eye"
+              @click="togglePasswordVisibility('teamPassword')"
+            />
+            <img
+              v-else
+              :src="require('~/assets/image/eye.png')"
+              class="eye"
+              @click="togglePasswordVisibility('teamPassword')"
+            />
+          </div>
         </div>
-        <div class="d-flex justify-content-between">
-          <b-button type="submit" variant="primary" class="px-4"
+
+        <div class="d-flex justify-content-between mb-4">
+          <b-button type="submit" variant="primary" class="w-100 mr-2"
             >회원가입</b-button
           >
-          <b-button variant="outline-secondary" @click="cancel" class="px-4"
+          <b-button
+            variant="outline-secondary"
+            @click="cancel"
+            class="w-100 ml-2"
             >취소</b-button
           >
         </div>
       </b-form>
-      <div class="text-center mt-3">
-        <p>
-          이미 계정이 있으신가요?
-          <b-link to="/login" class="login-link">로그인하기</b-link>
-        </p>
+
+      <div class="text-center mt-4 login-section">
+        <p class="mb-2">이미 계정이 있으신가요?</p>
+        <b-button to="/login" variant="outline-primary" class="w-100">
+          로그인하기
+        </b-button>
       </div>
     </b-card>
     <team-modal @noTeam="noTeam" @selectTeam="selectTeamFromModal" />
   </div>
 </template>
-
 <script>
 import { supabase } from "~/plugins/supabase.js";
 import TeamModal from "../../components/TeamModal.vue";
@@ -126,6 +185,7 @@ export default {
       next();
     }
   },
+  middleware: "auth",
   components: {
     TeamModal,
   },
@@ -184,7 +244,8 @@ export default {
           });
           return;
         }
-        if (this.user.team !== "") {
+
+        if (this.user.team && this.user.team !== null) {
           const { data: teamData, error: teamError } = await supabase
             .from("teams")
             .select("password")
@@ -192,26 +253,7 @@ export default {
 
           if (teamError) throw teamError;
 
-          if (teamData[0].password === this.user.teamPassword) {
-            const { user, error } = await supabase.auth.signUp({
-              email: this.user.email,
-              password: this.user.password,
-            });
-
-            if (error) throw error;
-
-            const { error: insertError } = await supabase.from("users").insert([
-              {
-                email: this.user.email,
-                password: this.user.password,
-                name: this.user.name,
-                date: this.user.date,
-                phone: this.user.phone,
-                team: this.user.team,
-              },
-            ]);
-            if (insertError) throw insertError;
-          } else {
+          if (teamData[0].password !== this.user.teamPassword) {
             this.$bvToast.toast("팀 비밀번호를 확인해주세요.", {
               title: "오류",
               variant: "danger",
@@ -219,26 +261,27 @@ export default {
             });
             return;
           }
-        } else {
-          const { user, error } = await supabase.auth.signUp({
+        }
+
+        const { user, error } = await supabase.auth.signUp({
+          email: this.user.email,
+          password: this.user.password,
+        });
+
+        if (error) throw error;
+
+        const { error: insertError } = await supabase.from("users").insert([
+          {
             email: this.user.email,
             password: this.user.password,
-          });
+            name: this.user.name,
+            date: this.user.date,
+            phone: this.user.phone,
+            team: this.user.team || null,
+          },
+        ]);
 
-          if (error) throw error;
-
-          const { error: insertError } = await supabase.from("users").insert([
-            {
-              email: this.user.email,
-              password: this.user.password,
-              name: this.user.name,
-              date: this.user.date,
-              phone: this.user.phone,
-              team: null,
-            },
-          ]);
-          if (insertError) throw insertError;
-        }
+        if (insertError) throw insertError;
 
         this.$bvToast.toast("회원가입이 완료되었습니다.", {
           title: "성공",
@@ -267,6 +310,7 @@ export default {
     },
     noTeam() {
       this.user.team = null;
+      this.user.teamPassword = "";
       this.$bvModal.hide("team-modal");
     },
     checkRegexThisComponent() {
@@ -293,15 +337,111 @@ export default {
 </script>
 
 <style scoped>
-.register-card {
+.register-container {
   display: flex;
-  flex-direction: row;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 20px;
 }
-.card-body {
-  max-width: 400px;
+
+.register-card {
+  width: 100%;
+  max-width: 500px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding: 2rem;
+}
+
+.welcome-message {
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.welcome-message h2 {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.welcome-message p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+.already-logged-in {
+  max-width: 500px;
+  width: 100%;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.eye:hover {
+  opacity: 0.8;
+}
+
+.team-section {
+  padding: 1.5rem 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.login-section {
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.login-section p {
+  color: #666;
+}
+
+.form-text {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+@media screen and (max-width: 767px) {
+  .register-card {
+    padding: 1.5rem;
+  }
+
+  .eye {
+    right: 8px;
+  }
+
+  .welcome-message {
+    padding: 15px 0;
+  }
+
+  .team-section {
+    padding: 1rem 0;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .register-card {
+    padding: 1rem;
+  }
+
+  .eye {
+    right: 6px;
+  }
+
+  .welcome-message h2 {
+    font-size: 1.5rem;
+  }
 }
 </style>

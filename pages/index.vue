@@ -184,7 +184,18 @@ export default {
   async mounted() {
     const token = localStorage.getItem("authToken");
     if (!token) {
-      this.$router.push("/login");
+      this.$bvModal
+        .msgBoxOk("협업 프로젝트 관리를 위해서는 로그인이 필요합니다.", {
+          title: "로그인 필요",
+          okVariant: "primary",
+          okTitle: "로그인하기",
+          headerClass: "p-2 border-bottom-0",
+          footerClass: "p-2",
+          centered: true,
+        })
+        .then(() => {
+          this.$router.push("/login");
+        });
       return;
     }
 
